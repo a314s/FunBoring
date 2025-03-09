@@ -719,7 +719,7 @@ nav ul li a:hover::after {
 
 /* Process Section with Parallax Effect */
 .process {
-    padding: 6rem 5%;
+    padding: 6rem 3%;
     background-color: var(--background-color);
     position: relative;
     overflow: hidden;
@@ -1515,6 +1515,13 @@ footer {
     width: 100%;
 }
 
+.process .section-title .text-reveal-wrapper {
+    padding-left: 6%;
+    display: inline-block;
+    white-space: nowrap; /* Prevent text from wrapping */
+    width: auto; /* Allow the wrapper to size to content */
+}
+
 .text-reveal-word {
     display: inline-block;
     opacity: 0;
@@ -2022,4 +2029,96 @@ footer {
     transform-origin: center;
     z-index: 11;
     pointer-events: none;
+}
+
+/* Corporate buildings styling */
+.corporate-buildings {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
+    opacity: 0.8;
+}
+
+.corporate-buildings.building-1 {
+    top: 120px;
+    left: 200px;
+    width: 80px;
+    height: 120px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120"><path d="M10,120 L10,40 L70,40 L70,120 Z" fill="%23455A64" opacity="0.7"/><path d="M20,60 L30,60 L30,70 L20,70 Z M40,60 L50,60 L50,70 L40,70 Z M20,80 L30,80 L30,90 L20,90 Z M40,80 L50,80 L50,90 L40,90 Z M20,100 L30,100 L30,110 L20,110 Z M40,100 L50,100 L50,110 L40,110 Z" fill="%23FFFFFF" opacity="0.5"/></svg>');
+}
+
+.corporate-buildings.building-2 {
+    top: 180px;
+    right: 150px;
+    width: 100px;
+    height: 140px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 140"><path d="M20,140 L20,30 L80,30 L80,140 Z" fill="%23455A64" opacity="0.7"/><path d="M90,140 L90,60 L130,60 L130,140 Z" fill="%23546E7A" opacity="0.8"/><path d="M30,60 L40,60 L40,70 L30,70 Z M50,60 L60,60 L60,70 L50,70 Z M30,80 L40,80 L40,90 L30,90 Z M50,80 L60,80 L60,90 L50,90 Z M30,100 L40,100 L40,110 L30,110 Z M50,100 L60,100 L60,110 L50,110 Z M100,70 L120,70 L120,80 L100,80 Z M100,90 L120,90 L120,100 L100,100 Z" fill="%23FFFFFF" opacity="0.5"/><path d="M10,140 L10,60 L20,60 L20,140 Z" fill="%23455A64" opacity="0.8"/><path d="M12,70 L18,70 L18,80 L12,80 Z M12,90 L18,90 L18,100 L12,100 Z M12,110 L18,110 L18,120 L12,120 Z" fill="%23FFFFFF" opacity="0.5"/></svg>');
+}
+
+.corporate-buildings.building-3 {
+    bottom: 150px;
+    left: 280px;
+    width: 120px;
+    height: 100px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100"><path d="M10,100 L10,50 L50,20 L90,50 L90,100 Z" fill="%23607D8B" opacity="0.7"/><path d="M40,100 L40,70 L60,70 L60,100 Z" fill="%23455A64" opacity="0.9"/><path d="M25,60 L35,60 L35,70 L25,70 Z M65,60 L75,60 L75,70 L65,70 Z M25,80 L35,80 L35,90 L25,90 Z M65,80 L75,80 L75,90 L65,90 Z" fill="%23FFFFFF" opacity="0.6"/></svg>');
+}
+
+.corporate-buildings.building-4 {
+    bottom: 100px;
+    right: 280px;
+    width: 150px;
+    height: 120px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 120"><path d="M20,120 L20,40 L80,40 L80,120 Z" fill="%23455A64" opacity="0.7"/><path d="M90,120 L90,60 L130,60 L130,120 Z" fill="%23546E7A" opacity="0.8"/><path d="M30,60 L40,60 L40,70 L30,70 Z M50,60 L60,60 L60,70 L50,70 Z M30,80 L40,80 L40,90 L30,90 Z M50,80 L60,80 L60,90 L50,90 Z M30,100 L40,100 L40,110 L30,110 Z M50,100 L60,100 L60,110 L50,110 Z M100,70 L120,70 L120,80 L100,80 Z M100,90 L120,90 L120,100 L100,100 Z" fill="%23FFFFFF" opacity="0.5"/></svg>');
+}
+
+.corporate-buildings.building-5 {
+    top: 200px;
+    left: 50px;
+    width: 90px;
+    height: 130px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 130"><path d="M10,130 L10,40 L80,40 L80,130 Z" fill="%23607D8B" opacity="0.7"/><path d="M20,50 L70,50 L70,60 L20,60 Z M20,70 L70,70 L70,80 L20,80 Z M20,90 L70,90 L70,100 L20,100 Z M20,110 L70,110 L70,120 L20,120 Z" fill="%23FFFFFF" opacity="0.3"/></svg>');
+}
+
+/* Additional map elements */
+.map-element {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
+    opacity: 0.7;
+}
+
+.map-element.parking-lot {
+    bottom: 180px;
+    left: 150px;
+    width: 100px;
+    height: 80px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80"><rect x="10" y="10" width="80" height="60" fill="%23607D8B" opacity="0.3"/><path d="M20,20 L30,20 M20,30 L30,30 M20,40 L30,40 M20,50 L30,50 M20,60 L30,60 M40,20 L50,20 M40,30 L50,30 M40,40 L50,40 M40,50 L50,50 M40,60 L50,60 M60,20 L70,20 M60,30 L70,30 M60,40 L70,40 M60,50 L70,50 M60,60 L70,60" stroke="%23FFFFFF" stroke-width="2" opacity="0.5"/></svg>');
+}
+
+.map-element.lake {
+    bottom: 120px;
+    right: 50px;
+    width: 130px;
+    height: 90px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 90"><path d="M10,45 C20,20 40,10 65,15 C90,20 110,40 120,45 C110,70 90,80 65,75 C40,70 20,70 10,45 Z" fill="%230066cc" opacity="0.3"/><path d="M30,45 C40,40 50,40 65,45 C80,50 90,50 100,45" fill="none" stroke="%23FFFFFF" stroke-width="1" opacity="0.5"/></svg>');
+}
+
+.map-element.power-lines {
+    top: 250px;
+    left: 150px;
+    width: 180px;
+    height: 100px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 100"><path d="M20,20 L20,80 M60,20 L60,80 M100,20 L100,80 M140,20 L140,80" stroke="%23607D8B" stroke-width="3" opacity="0.6"/><path d="M20,30 L140,30 M20,40 L140,40" stroke="%23607D8B" stroke-width="1" opacity="0.5"/></svg>');
+    transform: rotate(-5deg);
+}
+
+@keyframes compass-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
