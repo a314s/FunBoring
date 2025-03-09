@@ -1932,8 +1932,54 @@ footer {
     stroke-dasharray: 1000;
     stroke-dashoffset: 0; /* Start with the path visible */
     transition: stroke-dashoffset 2s ease;
-    stroke: #FF5722 !important; /* Ensure the path is always visible with the correct color */
+    stroke: #8B4513 !important; /* Brown color for road */
+    stroke-width: 12px !important; /* Wider path to look like a road */
+    stroke-linecap: round;
+    stroke-linejoin: round;
     opacity: 1 !important; /* Ensure the path is always visible */
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Critical path segments that need to be always visible */
+.critical-path-segment {
+    stroke: #8B4513 !important;
+    stroke-width: 14px !important; /* Slightly wider than main path for better visibility */
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 1 !important;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.4));
+    z-index: 6; /* Higher z-index than the main path */
+    pointer-events: none;
+}
+
+/* Specific styling for path segment 2-3 */
+#path-segment-2-3 {
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Specific styling for path segment 4-5 */
+#path-segment-4-5 {
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Add road markings */
+.treasure-path::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, 0) 100%);
+    opacity: 0.6;
+    background-size: 20px 100%;
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100"><path d="M0,50 C25,20 75,80 100,50" stroke="black" stroke-width="12" fill="none" /></svg>');
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
 }
 
 .map-visible #journey-path {
@@ -1958,194 +2004,22 @@ footer {
     pointer-events: auto; /* Ensure clicks work on the steps */
 }
 
-/* Ensure the path follower is always visible */
+/* Replace the dot with a car icon */
 #path-follower {
-    filter: drop-shadow(0 0 5px rgba(255, 87, 34, 0.7));
+    visibility: hidden; /* Hide the circle instead */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
     z-index: 10;
 }
 
-/* Special effects for the X marker */
-.marker-flag.treasure {
-    animation: treasure-pulse 2s ease-in-out infinite;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #4CAF50; /* Change to green for ongoing support */
-}
-
-.ongoing-support-icon {
-    width: 16px;
-    height: 16px;
-    animation: spin 4s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes treasure-pulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-    }
-    50% {
-        transform: scale(1.1);
-        box-shadow: 0 0 10px 5px rgba(76, 175, 80, 0.5);
-    }
-}
-
-/* Path follower animation */
-#path-follower {
-    filter: drop-shadow(0 0 5px rgba(255, 87, 34, 0.7));
-}
-
-/* Treasure map aged paper effect */
-.map-background::after {
-    content: '';
+/* Car or truck icon that follows the path */
+.path-vehicle {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23000000" opacity="0.03"/></svg>');
-    pointer-events: none;
-}
-
-/* Burned edges effect for the map */
-.treasure-map-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 20px;
-    box-shadow: inset 0 0 30px 10px rgba(139, 69, 19, 0.2);
-    z-index: 10;
-    pointer-events: none;
-}
-
-/* Animated map decorations */
-.map-decoration {
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 1s ease, transform 1s ease;
-}
-
-.map-visible .map-decoration {
-    opacity: 0.7;
-    transform: scale(1);
-}
-
-.map-decoration.corporate-icon {
-    animation: building-glow 8s ease-in-out infinite;
-}
-
-@keyframes building-glow {
-    0%, 100% {
-        transform: translateY(0);
-        opacity: 0.6;
-    }
-    50% {
-        transform: translateY(-5px);
-        opacity: 0.8;
-    }
-}
-
-.map-decoration.buildings {
-    animation: building-glow 8s ease-in-out infinite;
-}
-
-.map-decoration.waves {
-    animation: waves-move 10s linear infinite;
-}
-
-@keyframes waves-move {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 150px 0;
-    }
-}
-
-/* Corporate buildings for fantasy map feel */
-.map-decoration.corporate-buildings {
-    position: absolute;
-    background-repeat: no-repeat;
+    width: 30px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60"><path d="M15,40 L20,20 L80,20 L85,40 Z" fill="%23e74c3c"/><rect x="10" y="40" width="80" height="20" rx="5" fill="%23e74c3c"/><circle cx="25" cy="60" r="10" fill="%23333"/><circle cx="75" cy="60" r="10" fill="%23333"/><rect x="65" y="25" width="10" height="10" fill="%23eee"/><rect x="45" y="25" width="10" height="10" fill="%23eee"/><rect x="25" y="25" width="10" height="10" fill="%23eee"/></svg>');
     background-size: contain;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 1s ease, transform 1s ease;
-    animation: building-float 10s ease-in-out infinite;
-    z-index: 2;
-}
-
-.map-visible .map-decoration.corporate-buildings {
-    opacity: 0.5;
-    transform: scale(1);
-}
-
-/* Building 1 - Modern skyscraper */
-.map-decoration.corporate-buildings.building-1 {
-    top: 15%;
-    left: 15%;
-    width: 60px;
-    height: 120px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 120"><path d="M10,120 L10,20 L50,20 L50,120 Z" fill="%23455A64" opacity="0.7"/><path d="M15,115 L15,25 L45,25 L45,115 Z" fill="%23607D8B" opacity="0.9"/><path d="M20,25 L20,20 L40,20 L40,25 Z" fill="%23263238" opacity="0.8"/><path d="M20,35 L25,35 L25,40 L20,40 Z M30,35 L35,35 L35,40 L30,40 Z M40,35 L45,35 L45,40 L40,40 Z M20,45 L25,45 L25,50 L20,50 Z M30,45 L35,45 L35,50 L30,50 Z M40,45 L45,45 L45,50 L40,50 Z M20,55 L25,55 L25,60 L20,60 Z M30,55 L35,55 L35,60 L30,60 Z M40,55 L45,55 L45,60 L40,60 Z M20,65 L25,65 L25,70 L20,70 Z M30,65 L35,65 L35,70 L30,70 Z M40,65 L45,65 L45,70 L40,70 Z M20,75 L25,75 L25,80 L20,80 Z M30,75 L35,75 L35,80 L30,80 Z M40,75 L45,75 L45,80 L40,80 Z M20,85 L25,85 L25,90 L20,90 Z M30,85 L35,85 L35,90 L30,90 Z M40,85 L45,85 L45,90 L40,90 Z M20,95 L25,95 L25,100 L20,100 Z M30,95 L35,95 L35,100 L30,100 Z M40,95 L45,95 L45,100 L40,100 Z" fill="%23ECEFF1" opacity="0.6"/></svg>');
-    animation-delay: 0s;
-}
-
-/* Building 2 - Corporate headquarters */
-.map-decoration.corporate-buildings.building-2 {
-    top: 25%;
-    right: 20%;
-    width: 80px;
-    height: 100px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100"><path d="M10,100 L10,30 L70,30 L70,100 Z" fill="%23546E7A" opacity="0.7"/><path d="M5,30 L75,30 L75,40 L5,40 Z" fill="%23263238" opacity="0.8"/><path d="M15,100 L15,45 L65,45 L65,100 Z" fill="%23607D8B" opacity="0.9"/><path d="M20,55 L30,55 L30,65 L20,65 Z M35,55 L45,55 L45,65 L35,65 Z M50,55 L60,55 L60,65 L50,65 Z M20,70 L30,70 L30,80 L20,80 Z M35,70 L45,70 L45,80 L35,80 Z M50,70 L60,70 L60,80 L50,80 Z M20,85 L30,85 L30,95 L20,95 Z M35,85 L45,85 L45,95 L35,95 Z M50,85 L60,85 L60,95 L50,95 Z" fill="%23ECEFF1" opacity="0.6"/><path d="M35,20 L45,20 L45,40 L35,40 Z" fill="%23ECEFF1" opacity="0.8"/></svg>');
-    animation-delay: 1s;
-}
-
-/* Building 3 - Tech campus */
-.map-decoration.corporate-buildings.building-3 {
-    bottom: 20%;
-    left: 25%;
-    width: 120px;
-    height: 70px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70"><path d="M10,70 L10,40 L110,40 L110,70 Z" fill="%23455A64" opacity="0.7"/><path d="M20,40 L20,20 L50,20 L50,40 Z" fill="%23607D8B" opacity="0.8"/><path d="M70,40 L70,30 L100,30 L100,40 Z" fill="%23607D8B" opacity="0.8"/><path d="M30,20 L40,20 L40,10 L30,10 Z" fill="%23263238" opacity="0.9"/><path d="M15,50 L25,50 L25,60 L15,60 Z M35,50 L45,50 L45,60 L35,60 Z M55,50 L65,50 L65,60 L55,60 Z M75,50 L85,50 L85,60 L75,60 Z M95,50 L105,50 L105,60 L95,60 Z" fill="%23ECEFF1" opacity="0.6"/><path d="M25,30 L30,30 L30,35 L25,35 Z M40,30 L45,30 L45,35 L40,35 Z M75,35 L80,35 L80,40 L75,40 Z M90,35 L95,35 L95,40 L90,40 Z" fill="%23ECEFF1" opacity="0.7"/></svg>');
-    animation-delay: 2s;
-}
-
-/* Building 4 - Innovation center */
-.map-decoration.corporate-buildings.building-4 {
-    top: 60%;
-    right: 15%;
-    width: 90px;
-    height: 90px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90"><path d="M45,10 L80,40 L80,90 L10,90 L10,40 Z" fill="%23455A64" opacity="0.7"/><path d="M45,20 L70,40 L70,80 L20,80 L20,40 Z" fill="%23607D8B" opacity="0.8"/><path d="M45,30 L60,45 L60,70 L30,70 L30,45 Z" fill="%23ECEFF1" opacity="0.3"/><path d="M25,50 L35,50 L35,60 L25,60 Z M55,50 L65,50 L65,60 L55,60 Z M40,75 L50,75 L50,90 L40,90 Z" fill="%23ECEFF1" opacity="0.6"/></svg>');
-    animation-delay: 1.5s;
-}
-
-/* Building 5 - Research facility */
-.map-decoration.corporate-buildings.building-5 {
-    top: 40%;
-    left: 50%;
-    width: 70px;
-    height: 60px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 60"><path d="M10,60 L10,20 L60,20 L60,60 Z" fill="%23546E7A" opacity="0.7"/><path d="M20,20 L20,10 L50,10 L50,20 Z" fill="%23263238" opacity="0.8"/><path d="M30,10 L40,10 L40,0 L30,0 Z" fill="%23455A64" opacity="0.9"/><path d="M15,30 L25,30 L25,40 L15,40 Z M30,30 L40,30 L40,40 L30,40 Z M45,30 L55,30 L55,40 L45,40 Z M15,45 L25,45 L25,55 L15,55 Z M30,45 L40,45 L40,55 L30,55 Z M45,45 L55,45 L55,55 L45,55 Z" fill="%23ECEFF1" opacity="0.6"/></svg>');
-    animation-delay: 0.5s;
-}
-
-@keyframes building-float {
-    0%, 100% {
-        transform: translateY(0) scale(1);
-    }
-    50% {
-        transform: translateY(-5px) scale(1.02);
-    }
+    background-repeat: no-repeat;
+    transform-origin: center;
+    z-index: 11;
+    pointer-events: none;
 }

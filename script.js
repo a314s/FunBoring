@@ -1261,6 +1261,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!pathSvg || !journeyPath || !pathFollower || processSteps.length === 0) return;
         
+        // Create a vehicle element that will follow the path
+        const vehicle = document.createElement('div');
+        vehicle.className = 'path-vehicle';
+        pathSvg.parentNode.appendChild(vehicle);
+        
         // Function to get marker center positions
         function getMarkerPositions() {
             const positions = [];
@@ -1305,13 +1310,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return pathD;
         }
         
-        // Function to animate the follower along the path
-        function animateFollower() {
+        // Function to animate the vehicle along the path
+        function animateVehicle() {
             // Reset the animation
             pathFollower.style.offsetDistance = '0%';
             
-            // Create a keyframe animation
-            pathFollower.animate(
+            // Create a keyframe animation for the follower (invisible but used for positioning)
+            const followerAnimation = pathFollower.animate(
                 [
                     { offsetDistance: '0%' },
                     { offsetDistance: '100%' }
@@ -1322,6 +1327,55 @@ document.addEventListener('DOMContentLoaded', function() {
                     easing: 'ease-in-out'
                 }
             );
+            
+            // Update vehicle position based on the follower position
+            followerAnimation.onupdate = () => {
+                if (!pathFollower || !vehicle) return;
+                
+                // Get the current position of the follower
+                const followerRect = pathFollower.getBoundingClientRect();
+                const svgRect = pathSvg.getBoundingClientRect();
+                
+                // Calculate the position and rotation for the vehicle
+                const x = followerRect.left - svgRect.left;
+                const y = followerRect.top - svgRect.top;
+                
+                // Position the vehicle
+                vehicle.style.left = `${x - 15}px`; // Adjust for vehicle size
+                vehicle.style.top = `${y - 10}px`; // Adjust for vehicle size
+                
+                // Calculate rotation based on path direction
+                // This is a simplified approach - for a more accurate rotation,
+                // you would need to calculate the tangent of the path at the current point
+                if (followerAnimation.currentTime) {
+                    const progress = followerAnimation.currentTime / followerAnimation.effect.getTiming().duration;
+                    const rotationAngle = progress * 360; // Simple rotation for demonstration
+                    vehicle.style.transform = `rotate(${rotationAngle}deg)`;
+                }
+            };
+            
+            // Fallback if onupdate is not supported
+            if (!followerAnimation.onupdate) {
+                // Use a separate interval to update the vehicle position
+                const updateInterval = setInterval(() => {
+                    if (!pathFollower || !vehicle) {
+                        clearInterval(updateInterval);
+                        return;
+                    }
+                    
+                    // Get the current position of the follower
+                    const followerRect = pathFollower.getBoundingClientRect();
+                    const svgRect = pathSvg.getBoundingClientRect();
+                    
+                    // Calculate the position for the vehicle
+                    const x = followerRect.left - svgRect.left;
+                    const y = followerRect.top - svgRect.top;
+                    
+                    // Position the vehicle
+                    vehicle.style.left = `${x - 15}px`; // Adjust for vehicle size
+                    vehicle.style.top = `${y - 10}px`; // Adjust for vehicle size
+                }, 50);
+            }
         }
         
         // Function to update the path when window resizes
@@ -1338,14 +1392,72 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Update the path
             journeyPath.setAttribute('d', pathD);
-            journeyPath.setAttribute('stroke', '#FF5722');
-            journeyPath.setAttribute('stroke-width', '4');
+            journeyPath.setAttribute('stroke', '#8B4513'); // Brown color for road
+            journeyPath.setAttribute('stroke-width', '12'); // Wider for road
+            
+            // Create specific path segments for steps 2-3 and 4-5 to ensure visibility
+            const segment23 = document.getElementById('path-segment-2-3');
+            const segment45 = document.getElementById('path-segment-4-5');
+            
+            // If segments don't exist, create them
+            if (!segment23) {
+                const segment23Path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                segment23Path.id = 'path-segment-2-3';
+                segment23Path.setAttribute('class', 'critical-path-segment');
+                pathSvg.appendChild(segment23Path);
+            }
+            
+            if (!segment45) {
+                const segment45Path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                segment45Path.id = 'path-segment-4-5';
+                segment45Path.setAttribute('class', 'critical-path-segment');
+                pathSvg.appendChild(segment45Path);
+            }
+            
+            // Update or create the specific segments for steps 2-3 and 4-5
+            if (positions.length >= 5) {
+                // Create path for segment 2-3 (index 1 to 2)
+                const segment23Path = document.getElementById('path-segment-2-3');
+                const p1 = positions[1]; // Step 2
+                const p2 = positions[2]; // Step 3
+                const midX23 = (p1.x + p2.x) / 2;
+                
+                // Create path data for segment 2-3
+                let pathD23 = `M${p1.x},${p1.y}`;
+                pathD23 += ` C${midX23},${p1.y + 50} ${midX23},${p2.y - 50} ${p2.x},${p2.y}`;
+                
+                segment23Path.setAttribute('d', pathD23);
+                segment23Path.setAttribute('stroke', '#8B4513');
+                segment23Path.setAttribute('stroke-width', '14'); // Slightly wider than main path
+                segment23Path.setAttribute('fill', 'none');
+                segment23Path.setAttribute('stroke-linecap', 'round');
+                segment23Path.setAttribute('stroke-linejoin', 'round');
+                segment23Path.style.opacity = '1';
+                
+                // Create path for segment 4-5 (index 3 to 4)
+                const segment45Path = document.getElementById('path-segment-4-5');
+                const p3 = positions[3]; // Step 4
+                const p4 = positions[4]; // Step 5
+                const midX45 = (p3.x + p4.x) / 2;
+                
+                // Create path data for segment 4-5
+                let pathD45 = `M${p3.x},${p3.y}`;
+                pathD45 += ` C${midX45},${p3.y - 50} ${midX45},${p4.y + 50} ${p4.x},${p4.y}`;
+                
+                segment45Path.setAttribute('d', pathD45);
+                segment45Path.setAttribute('stroke', '#8B4513');
+                segment45Path.setAttribute('stroke-width', '14'); // Slightly wider than main path
+                segment45Path.setAttribute('fill', 'none');
+                segment45Path.setAttribute('stroke-linecap', 'round');
+                segment45Path.setAttribute('stroke-linejoin', 'round');
+                segment45Path.style.opacity = '1';
+            }
             
             // Set the path for the follower
             pathFollower.style.offsetPath = `path('${pathD}')`;
             
             // Start the animation
-            animateFollower();
+            animateVehicle();
         }
         
         // Initialize the path
