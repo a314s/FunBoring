@@ -950,60 +950,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!logo || !logoContainer) return;
         
-        // Create a wrapper for the logo for 3D effects
-        const logoWrapper = document.createElement('div');
-        logoWrapper.className = 'logo-wrapper';
-        logoContainer.innerHTML = '';
-        logoWrapper.appendChild(logo);
-        logoContainer.appendChild(logoWrapper);
+        // Simply place the logo in the container without animations
+        // Keep the original logo in place without any animation wrappers
         
-        // Add glow effect elements
-        const glowEffect = document.createElement('div');
-        glowEffect.className = 'logo-glow';
-        logoWrapper.appendChild(glowEffect);
-        
-        // Add particles around logo
-        const logoParticles = document.createElement('div');
-        logoParticles.className = 'logo-particles';
-        for (let i = 0; i < 10; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'logo-particle';
-            particle.style.setProperty('--delay', `${Math.random() * 2}s`);
-            particle.style.setProperty('--size', `${Math.random() * 5 + 3}px`);
-            logoParticles.appendChild(particle);
-        }
-        logoWrapper.appendChild(logoParticles);
-        
-        // Add event listeners for interactive effects
-        logoWrapper.addEventListener('mouseenter', () => {
-            logoWrapper.classList.add('logo-hover');
-        });
-        
-        logoWrapper.addEventListener('mouseleave', () => {
-            logoWrapper.classList.remove('logo-hover');
-        });
-        
-        // Add scroll-based animation
-        window.addEventListener('scroll', () => {
-            const scrollPos = window.scrollY;
-            const rotationAmount = Math.min(scrollPos / 10, 180);
-            
-            // Only apply rotation if we're at the top of the page (first 500px)
-            if (scrollPos < 500) {
-                logo.style.transform = `rotateY(${rotationAmount}deg)`;
-                glowEffect.style.opacity = scrollPos / 500;
-            }
-        });
-        
-        // Add click animation
-        logoWrapper.addEventListener('click', () => {
-            logoWrapper.classList.add('logo-pulse');
-            setTimeout(() => {
-                logoWrapper.classList.remove('logo-pulse');
-            }, 700);
-        });
+        // Disable all animation and interaction effects
+        logo.style.transform = 'none';
+        logo.style.transition = 'none';
     }
-
+    
     // Call the logo animation initialization
     initLogoAnimation();
 

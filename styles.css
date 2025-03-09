@@ -1365,109 +1365,46 @@ footer {
     cursor: pointer;
 }
 
-/* Logo Animation Styles */
+/* Logo Styles - No Animation */
 .logo-wrapper {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    perspective: 1000px;
+    display: inline-block;
 }
 
 .logo {
-    height: 75px;
-    transition: transform 0.5s ease, filter 0.3s ease;
-    transform-style: preserve-3d;
-    will-change: transform;
+    display: block;
+    height: 50px;
+    transition: none;
+    transform: none;
 }
 
-.logo-hover {
-    transform: scale(1.05);
-}
-
+/* Disable all animation effects */
 .logo-hover .logo {
-    filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.7));
+    transform: none;
 }
 
 .logo-glow {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 170, 255, 0.4) 0%, rgba(0, 170, 255, 0) 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: -1;
+    display: none;
 }
 
 .logo-hover .logo-glow {
-    opacity: 0.8;
-    animation: pulse-glow 2s infinite;
+    display: none;
 }
 
 .logo-particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    display: none;
 }
 
 .logo-particle {
-    position: absolute;
-    width: var(--size, 5px);
-    height: var(--size, 5px);
-    background-color: var(--accent-color);
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
+    display: none;
 }
 
 .logo-hover .logo-particle {
-    animation: float-particle 3s infinite ease-in-out;
-    animation-delay: var(--delay, 0s);
-    opacity: 0.7;
+    display: none;
 }
 
 .logo-pulse {
-    animation: logo-pulse-animation 0.7s ease-in-out;
-}
-
-@keyframes pulse-glow {
-    0% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.8;
-        transform: scale(1.1);
-    }
-    100% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
-}
-
-@keyframes float-particle {
-    0% {
-        transform: translate(0, 0);
-        opacity: 0;
-    }
-    25% {
-        opacity: 0.7;
-    }
-    75% {
-        opacity: 0.7;
-    }
-    100% {
-        transform: translate(
-            calc(40px * cos(var(--delay, 0s) * 360deg)),
-            calc(40px * sin(var(--delay, 0s) * 360deg))
-        );
-        opacity: 0;
-    }
+    animation: none;
 }
 
 @keyframes logo-pulse-animation {
@@ -1475,7 +1412,7 @@ footer {
         transform: scale(1);
     }
     50% {
-        transform: scale(1.1);
+        transform: scale(1);
     }
     100% {
         transform: scale(1);
