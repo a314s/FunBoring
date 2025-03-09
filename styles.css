@@ -2018,17 +2018,29 @@ footer {
     z-index: 10;
 }
 
-/* Car or truck icon that follows the path */
+/* Magnifying glass icon that follows the path */
 .path-vehicle {
     position: absolute;
-    width: 30px;
-    height: 20px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60"><path d="M15,40 L20,20 L80,20 L85,40 Z" fill="%23e74c3c"/><rect x="10" y="40" width="80" height="20" rx="5" fill="%23e74c3c"/><circle cx="25" cy="60" r="10" fill="%23333"/><circle cx="75" cy="60" r="10" fill="%23333"/><rect x="65" y="25" width="10" height="10" fill="%23eee"/><rect x="45" y="25" width="10" height="10" fill="%23eee"/><rect x="25" y="25" width="10" height="10" fill="%23eee"/></svg>');
+    width: 60px;  /* Increased from 40px (1.5x larger) */
+    height: 60px; /* Increased from 40px (1.5x larger) */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="40" cy="40" r="25" fill="none" stroke="%234285F4" stroke-width="8" opacity="0.9"/><path d="M60,60 L85,85" stroke="%234285F4" stroke-width="10" stroke-linecap="round" opacity="0.9"/><circle cx="40" cy="40" r="18" fill="%23f9f9f9" opacity="0.4"/></svg>');
     background-size: contain;
     background-repeat: no-repeat;
     transform-origin: center;
     z-index: 11;
     pointer-events: none;
+    filter: drop-shadow(0 0 5px rgba(66, 133, 244, 0.7));
+    animation: magnify-bounce 2s infinite alternate ease-in-out;
+    display: block !important; /* Ensure the vehicle is always visible */
+}
+
+@keyframes magnify-bounce {
+    0% {
+        transform: translateY(0px) scale(1);
+    }
+    100% {
+        transform: translateY(-3px) scale(1.1);
+    }
 }
 
 /* Corporate buildings styling */

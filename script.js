@@ -1254,6 +1254,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const processSection = document.querySelector('.process');
         if (!processSection) return;
         
+        const treasureMapContainer = document.querySelector('.treasure-map-container');
         const pathSvg = document.getElementById('path-svg');
         const journeyPath = document.getElementById('journey-path');
         const pathFollower = document.getElementById('path-follower');
@@ -1262,9 +1263,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!pathSvg || !journeyPath || !pathFollower || processSteps.length === 0) return;
         
         // Create a vehicle element that will follow the path
-        const vehicle = document.createElement('div');
-        vehicle.className = 'path-vehicle';
-        pathSvg.parentNode.appendChild(vehicle);
+        let vehicle = document.querySelector('.path-vehicle');
+        if (!vehicle) {
+            vehicle = document.createElement('div');
+            vehicle.className = 'path-vehicle';
+            treasureMapContainer.appendChild(vehicle);
+        }
+        
+        // Make the path follower invisible (used only for calculations)
+        pathFollower.setAttribute('visibility', 'hidden');
+        pathFollower.style.visibility = 'hidden';
         
         // Function to get marker center positions
         function getMarkerPositions() {
@@ -1312,70 +1320,54 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Function to animate the vehicle along the path
         function animateVehicle() {
-            // Reset the animation
-            pathFollower.style.offsetDistance = '0%';
+            // Make sure the vehicle is visible
+            vehicle.style.display = 'block';
+            vehicle.style.opacity = '1';
             
-            // Create a keyframe animation for the follower (invisible but used for positioning)
-            const followerAnimation = pathFollower.animate(
-                [
-                    { offsetDistance: '0%' },
-                    { offsetDistance: '100%' }
-                ],
-                {
-                    duration: 8000,
-                    iterations: Infinity,
-                    easing: 'ease-in-out'
-                }
-            );
+            // Create animation variables
+            let startTime = null;
+            const duration = 30000; // 30 seconds for one complete journey (slowed down from 20 seconds)
             
-            // Update vehicle position based on the follower position
-            followerAnimation.onupdate = () => {
-                if (!pathFollower || !vehicle) return;
+            // Manual animation function using requestAnimationFrame for better browser support
+            function animateFrame(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
                 
-                // Get the current position of the follower
-                const followerRect = pathFollower.getBoundingClientRect();
+                // If we've completed a cycle, restart
+                if (progress >= 1) {
+                    startTime = timestamp;
+                }
+                
+                // Calculate position along the path
+                const pathLength = journeyPath.getTotalLength();
+                const point = journeyPath.getPointAtLength(progress * pathLength);
+                
+                // Calculate the next point for rotation
+                const lookAheadPoint = journeyPath.getPointAtLength(Math.min((progress + 0.01) * pathLength, pathLength));
+                
+                // Calculate angle for rotation
+                const angle = Math.atan2(lookAheadPoint.y - point.y, lookAheadPoint.x - point.x) * 180 / Math.PI;
+                
+                // Position the vehicle relative to the SVG
                 const svgRect = pathSvg.getBoundingClientRect();
+                const mapRect = treasureMapContainer.getBoundingClientRect();
                 
-                // Calculate the position and rotation for the vehicle
-                const x = followerRect.left - svgRect.left;
-                const y = followerRect.top - svgRect.top;
+                // Calculate position relative to the map container
+                const x = point.x + (svgRect.left - mapRect.left);
+                const y = point.y + (svgRect.top - mapRect.top);
                 
-                // Position the vehicle
-                vehicle.style.left = `${x - 15}px`; // Adjust for vehicle size
-                vehicle.style.top = `${y - 10}px`; // Adjust for vehicle size
+                // Update vehicle position and rotation
+                vehicle.style.left = `${x - 20}px`; // Adjust for vehicle size
+                vehicle.style.top = `${y - 15}px`; // Adjust for vehicle size
+                vehicle.style.transform = `rotate(${angle}deg)`;
                 
-                // Calculate rotation based on path direction
-                // This is a simplified approach - for a more accurate rotation,
-                // you would need to calculate the tangent of the path at the current point
-                if (followerAnimation.currentTime) {
-                    const progress = followerAnimation.currentTime / followerAnimation.effect.getTiming().duration;
-                    const rotationAngle = progress * 360; // Simple rotation for demonstration
-                    vehicle.style.transform = `rotate(${rotationAngle}deg)`;
-                }
-            };
-            
-            // Fallback if onupdate is not supported
-            if (!followerAnimation.onupdate) {
-                // Use a separate interval to update the vehicle position
-                const updateInterval = setInterval(() => {
-                    if (!pathFollower || !vehicle) {
-                        clearInterval(updateInterval);
-                        return;
-                    }
-                    
-                    // Get the current position of the follower
-                    const followerRect = pathFollower.getBoundingClientRect();
-                    const svgRect = pathSvg.getBoundingClientRect();
-                    
-                    // Calculate the position for the vehicle
-                    const x = followerRect.left - svgRect.left;
-                    const y = followerRect.top - svgRect.top;
-                    
-                    // Position the vehicle
-                    vehicle.style.left = `${x - 15}px`; // Adjust for vehicle size
-                    vehicle.style.top = `${y - 10}px`; // Adjust for vehicle size
-                }, 50);
+                // Continue the animation
+                requestAnimationFrame(animateFrame);
             }
+            
+            // Start the animation
+            requestAnimationFrame(animateFrame);
         }
         
         // Function to update the path when window resizes
